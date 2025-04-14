@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  rtmp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: local-nginx-rtmp
+    ports:
+      - "1935:1935"   # RTMP streaming port
+      - "8080:8080"   # HTTP stats/test page
+    restart: unless-stopped
