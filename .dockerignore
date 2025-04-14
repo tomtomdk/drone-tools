@@ -1,0 +1,23 @@
+# Ignore git history
+.git
+.gitignore
+
+# Ignore Docker compose override files (if present)
+docker-compose.override.yml
+
+# Ignore macOS / Linux system files
+.DS_Store
+Thumbs.db
+
+# Ignore editor or IDE config files
+.vscode/
+.idea/
+*.swp
+
+# Ignore readme and documentation files (not needed inside the container)
+README.md
+LICENSE.md
+
+# Ignore local build artifacts
+*.log
+tmp/
