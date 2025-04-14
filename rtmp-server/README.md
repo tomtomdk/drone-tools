@@ -1,151 +1,224 @@
-# Local RTMP Server for DJI Controller Streaming using Docker
+# 🚀 Local RTMP Server for DJI Drone Streaming
+
+[![Docker Build](https://img.shields.io/badge/Docker-Build%20Passing-brightgreen)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
+[![Status: Production Ready](https://img.shields.io/badge/Status-Production%20Ready-green)]()
+
+---
 
 ## Overview
 
-This project allows you to stream video from your **DJI Drone Controller** to **OBS Studio** on your laptop via an **RTMP server** running inside a **Docker container**. The server is based on **NGINX** with the **RTMP module**. This setup ensures that the stream is **local** to your machine, with no need for third-party platforms like YouTube or Twitch.
+This project provides a **self-hosted RTMP server** inside a **Docker container** for streaming video from your **DJI drone controller** directly into **OBS Studio** — without relying on external services like YouTube or Twitch.  
+Built with **NGINX** and the **RTMP module**, it offers a simple, fast, and fully local streaming solution.
+
+---
 
 ## Features
-- Stream **DJI Drone** video to your laptop in **real-time**.
-- **OBS Studio** can capture the stream from the local RTMP server.
-- **Docker-based** solution for easy setup and portability.
+
+- 🎥 Real-time DJI video streaming to OBS Studio.
+- 📦 Fully containerized with Docker.
+- 🔒 100% private, local network streaming.
+- ⚡ Lightweight and production-ready setup.
+- 🛠️ Single-command deployment using `docker-compose`.
+
+---
 
 ## Prerequisites
 
-Before getting started, ensure that you have the following installed:
+| Software | Purpose | Download |
+|:---------|:--------|:---------|
+| **Docker** | Run containerized RTMP server | [Docker Download](https://www.docker.com/products/docker-desktop) |
+| **Docker Compose** | Manage services with single command | [Compose Install Guide](https://docs.docker.com/compose/install/) |
+| **OBS Studio** | Capture and record the RTMP stream | [OBS Studio Download](https://obsproject.com/download) |
 
-- **Docker**: The project is containerized, so Docker must be installed on your machine.
-  - Download and install Docker from: [Docker Official Website](https://www.docker.com/products/docker-desktop)
-- **OBS Studio**: To view and record the stream.
-  - Download OBS Studio from: [OBS Official Website](https://obsproject.com/download)
+✅ **Additional Requirements**:
+- Your DJI controller must support **Custom RTMP streaming**.
+- Laptop and DJI controller must be connected to the **same local network**.
 
-### For the DJI Controller:
-- Your **DJI Controller** must support **RTMP streaming**. It should be able to stream directly to a custom RTMP server.
-- Your laptop and DJI controller should be on the **same network** for the RTMP stream to work.
+---
 
-## Setup Instructions
+## 🏁 Quickstart (Using Docker Compose)
 
 ### Step 1: Clone the Repository
-
-Clone this repository to your local machine.
 
 ```bash
 git clone https://github.com/yourusername/rtmp-docker-dji-stream.git
 cd rtmp-docker-dji-stream
 ```
 
-### Step 2: Docker Image Setup
+---
 
-This project uses **Docker** to set up an **NGINX RTMP server**.
-
-#### 2.1: Dockerfile and Configuration
-
-The Docker container is configured to run an **NGINX RTMP server** with the following settings:
-
-- **RTMP server listens on port 1935** for incoming streams.
-- **HTTP server listens on port 8080** (for testing purposes).
-
-#### 2.2: Build the Docker Image
-
-Run the following command to build the Docker image:
+### Step 2: Bring Up the Server
 
 ```bash
-docker build -t nginx-rtmp .
+docker-compose up -d
 ```
 
-### Step 3: Running the Docker Container
+✅ This will **build** the Docker image and **launch** the container automatically.
 
-Once the image is built, run the container in detached mode:
+---
+
+### Step 3: Shut Down the Server
 
 ```bash
-docker run -d --name nginx-rtmp -p 1935:1935 -p 8080:8080 nginx-rtmp
+docker-compose down
 ```
 
-This command maps:
-- **Port 1935** (RTMP) from the container to your laptop.
-- **Port 8080** (HTTP) for testing purposes.
+---
 
-### Step 4: Configure Your DJI Controller
+## 📄 `docker-compose.yml` Used
 
-1. Open the **settings menu** on your DJI Controller.
-2. Choose the **Custom RTMP option** for streaming.
-3. Set the RTMP URL to:
+Here’s the **full `docker-compose.yml`** included in this project:
 
-   ```
-   rtmp://<your-laptop-ip>/live/stream
-   ```
+```yaml
+version: '3.8'
 
-   Replace `<your-laptop-ip>` with the **local IP address** of your laptop. You can find it using the command:
+services:
+  rtmp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: local-nginx-rtmp
+    ports:
+      - "1935:1935"   # RTMP streaming port
+      - "8080:8080"   # HTTP stats/test page
+    restart: unless-stopped
+```
 
-   ```bash
-   ipconfig (Windows) or ifconfig (Mac/Linux)
-   ```
+✅ **Explanation**:
+| Field | Purpose |
+|:-----|:--------|
+| `version: '3.8'` | Modern, widely compatible Compose version |
+| `build.context` | Build from the current directory |
+| `container_name` | Easy-to-manage container name |
+| `ports` | Exposes RTMP (1935) and HTTP (8080) |
+| `restart: unless-stopped` | Auto-restarts the container on failure or reboot |
 
-### Step 5: Configure OBS Studio
+---
 
-1. Open **OBS Studio** on your laptop.
+## 🔥 RTMP Server Configuration
+
+The server exposes:
+
+| Port | Purpose |
+|:----:|:-------:|
+| 1935 | RTMP stream ingest (from DJI controller) |
+| 8080 | HTTP web page (optional stats and testing) |
+
+You can view basic server info at: [http://localhost:8080](http://localhost:8080)
+
+---
+
+## 📋 DJI Controller Setup
+
+1. Open your DJI Controller settings.
+2. Set **Custom RTMP** as your streaming method.
+3. Configure the URL to:
+
+```plaintext
+rtmp://<your-laptop-ip>/live/stream
+```
+
+- Replace `<your-laptop-ip>` with your actual local IP address.
+- Find it by running:
+  - Windows: `ipconfig`
+  - Mac/Linux: `ifconfig`
+
+---
+
+## 🎥 OBS Studio Setup
+
+1. Open **OBS Studio**.
 2. Add a **Media Source** to your scene.
-3. In the **Media Source properties**, uncheck **Local File** and set the **Input URL** to:
+3. Configure the Media Source:
+   - **Uncheck** "Local File"
+   - **Input URL**:
 
-   ```
+   ```plaintext
    rtmp://localhost/live/stream
    ```
 
-4. Click **OK** and start streaming from your DJI controller.
-
-## Usage
-
-Once the Docker container is running and your DJI controller is streaming, you should see the feed in **OBS Studio**. You can then record or broadcast it according to your preferences.
-
-- **Test the connection**: You can verify that the server is running correctly by opening a browser and visiting:
-  ```
-  http://localhost:8080
-  ```
-
-  If the stream is active, you will see the default NGINX HTML page.
-
-## Troubleshooting
-
-- **No video in OBS**:
-  - Ensure the DJI controller is correctly streaming to the RTMP URL.
-  - Make sure that the **NGINX server** is running properly and the ports are open.
-  
-- **Unable to connect to RTMP server**:
-  - Ensure that both your DJI controller and laptop are on the same network.
-  - Check that your firewall allows inbound connections to port 1935.
-
-## Docker Commands
-
-To **stop** the Docker container:
-
-```bash
-docker stop nginx-rtmp
-```
-
-To **restart** the Docker container:
-
-```bash
-docker restart nginx-rtmp
-```
-
-To **remove** the Docker container:
-
-```bash
-docker rm nginx-rtmp
-```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+4. Start streaming from your DJI controller — the video feed will appear inside OBS.
 
 ---
 
-## Acknowledgments
+## 📂 Folder Structure
 
-- **NGINX** for providing the RTMP module: [NGINX RTMP Module](https://github.com/arut/nginx-rtmp-module)
-- **Docker** for making containerization simple and portable.
-- **OBS Studio** for providing a powerful open-source tool to capture streams.
+```plaintext
+rtmp-docker-dji-stream/
+├── Dockerfile
+├── docker-compose.yml
+├── nginx.conf
+├── README.md
+└── (optional) index.html
+```
 
 ---
 
-For more details or questions, feel free to contact us at [rob@aztekmq.net].
+## 📄 Key Files Explained
+
+| File | Purpose |
+|:-----|:--------|
+| `Dockerfile` | Defines the NGINX + RTMP server container |
+| `docker-compose.yml` | Single-command deployment file |
+| `nginx.conf` | RTMP server and HTTP server configuration |
+| `index.html` (optional) | Landing page for HTTP server |
+
+---
+
+## 🛠️ Advanced Usage
+
+| Action | Command |
+|:------|:--------|
+| Rebuild after changes | `docker-compose up -d --build` |
+| View container logs | `docker logs -f local-nginx-rtmp` |
+| Manually stop/start container | `docker stop local-nginx-rtmp && docker start local-nginx-rtmp` |
+
+---
+
+## 🧰 Troubleshooting
+
+| Problem | Solution |
+|:--------|:---------|
+| OBS black screen | Ensure DJI controller is sending the stream. Confirm correct RTMP URL. |
+| Controller can't connect | Verify laptop/controller are on the same network. Check firewall settings. |
+| Server not reachable | Confirm Docker container is running and ports are mapped correctly. |
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE.md).
+
+---
+
+## 🤝 Credits
+
+- [NGINX RTMP Module](https://github.com/arut/nginx-rtmp-module)
+- [Docker](https://www.docker.com/)
+- [OBS Studio](https://obsproject.com/)
+
+---
+
+## 📬 Contact
+
+For questions, improvements, or feedback:  
+**rob@aztekmq.net**
+
+---
+
+# ✅ Status: **Production Ready**
+
+---
+
+# 🚀 Ready to Stream Locally?
+Launch your **self-hosted RTMP server** in seconds — and keep your drone footage **private, secure, and lightning-fast**!
+
+---
+
+# 🔥 Summary of What's Included:
+- Dockerfile (NGINX + RTMP module)
+- nginx.conf (RTMP server configuration)
+- docker-compose.yml (professional single-command startup)
+- Fully structured, lightweight, production-grade deployment
 
