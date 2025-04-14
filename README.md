@@ -1,6 +1,3 @@
-Sure! Here’s a **professional `README.md`** for your project, outlining everything step-by-step, including prerequisites, setup instructions, and usage.
-
-```markdown
 # Local RTMP Server for DJI Controller Streaming using Docker
 
 ## Overview
@@ -150,19 +147,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-For more details or questions, feel free to contact us at [your-email@example.com].
+For more details or questions, feel free to contact us at [rob@aztekmq.net].
 
-```
-
----
-
-### Key Sections of the `README.md`:
-- **Overview**: A brief introduction to the project.
-- **Prerequisites**: Requirements like Docker, OBS Studio, and network setup.
-- **Setup Instructions**: Clear, step-by-step guide to building and running the Docker container.
-- **Usage**: How to configure your DJI controller and OBS Studio to stream locally.
-- **Troubleshooting**: Tips to resolve common issues.
-- **Docker Commands**: Handy commands for managing the Docker container.
-- **License**: Information on licensing and any acknowledgments.
-
-This will give your project a professional, user-friendly structure that’s easy for others to follow and get started with.
