@@ -9,8 +9,11 @@
 
 ## Overview
 
-This project provides a **self-hosted RTMP server** inside a **Docker container** for streaming video from your **DJI drone controller** directly into **OBS Studio** — without relying on external services like YouTube or Twitch.  
-Built using **NGINX precompiled with the RTMP module** (`tiangolo/nginx-rtmp`), it offers a simple, fast, and fully local streaming solution.
+This project provides a **self-hosted RTMP server** inside a **Docker container** for streaming video directly into **OBS Studio** — without relying on external services like YouTube or Twitch.
+
+Although originally designed with **DJI drone controllers** in mind, this solution is fully compatible with **any drone or device** capable of broadcasting via the **RTMP protocol**.
+
+Built using **NGINX precompiled with the RTMP module** (`tiangolo/nginx-rtmp`), it offers a simple, fast, and fully local streaming experience that works across brands and platforms.
 
 ---
 
