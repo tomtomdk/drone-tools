@@ -4,7 +4,6 @@
 [![Health: Passing](https://img.shields.io/badge/Health-Passing-success?logo=heartbeat)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 [![Status: Production Ready](https://img.shields.io/badge/Status-Production%20Ready-green)]()
-[![Size: Lightweight](https://img.shields.io/badge/Size-Lightweight-20MB-success?logo=datadog)]()
 
 ---
 
