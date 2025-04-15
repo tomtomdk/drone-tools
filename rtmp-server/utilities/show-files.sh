@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Directory to scan, default to current dir if none provided
-SCAN_DIR="${1:-.}"
+SCAN_DIR="${1:-../}"
 
 # Function to check if a file is text
 is_text_file() {
