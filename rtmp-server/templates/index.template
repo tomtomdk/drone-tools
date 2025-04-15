@@ -1,0 +1,83 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>✅ Local RTMP Server Running</title>
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    h1 {
+      color: #2e8b57;
+      margin-bottom: 20px;
+    }
+    p {
+      color: #333333;
+      font-size: 18px;
+    }
+    .copy-container {
+      margin-top: 40px;
+    }
+    input.copy-text {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    button.copy-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button.copy-btn:hover {
+      background-color: #45a049;
+    }
+    .copied-message {
+      color: #4CAF50;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>✅ Local RTMP Server is Running</h1>
+  <p>Your self-hosted RTMP server is operational.<br>
+  You can now stream video from your DJI controller into OBS Studio locally.</p>
+
+  <div class="copy-container">
+    <p><strong>DJI Controller RTMP URL:</strong></p>
+    <input type="text" class="copy-text" id="rtmpUrlDynamic" value="rtmp://HOSTIP-PLACE-HOLDER/live/stream" readonly>
+    <br>
+    <button class="copy-btn" onclick="copyRTMP()">Copy URL</button>
+    <div class="copied-message" id="copiedMsg">✅ Copied to clipboard!</div>
+  </div>
+
+  <script>
+    function copyRTMP() {
+      var copyText = document.getElementById("rtmpUrlDynamic"); // FIXED ID
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); // for mobile compatibility
+      document.execCommand("copy");
+
+      var msg = document.getElementById("copiedMsg");
+      msg.style.display = "block";
+      setTimeout(function() {
+        msg.style.display = "none";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
